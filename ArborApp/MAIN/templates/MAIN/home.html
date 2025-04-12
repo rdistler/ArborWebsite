@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArbOne - Tree Removal Service Marketplace</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #4caf50;
+            --accent: #f57c00;
+            --light: #f5f5f5;
+            --dark: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1200/600');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 150px 0 100px;
+            text-align: center;
+            margin-top: 70px;
+        }
+        
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e65100;
+            transform: translateY(-3px);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h3 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .card h4 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        /* User Types Section */
+        .user-types {
+            padding: 80px 0;
+            background-color: #f9f9f9;
+        }
+        
+        .user-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+        
+        .user-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 40px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+        
+        .user-box h4 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .form-submit:hover {
+            background-color: #1b5e20;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .testimonial-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .testimonial {
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .testimonial p {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-col h5 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h5::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#2e7d32"/>
+                    <path d="M20 8C13.373 8 8 13.373 8 20C8 26.627 13.373 32 20 32C26.627 32 32 26.627 32 20C32 13.373 26.627 8 20 8ZM20 30C14.477 30 10 25.523 10 20C10 14.477 14.477 10 20 10C25.523 10 30 14.477 30 20C30 25.523 25.523 30 20 30Z" fill="white"/>
+                    <path d="M20 15C17.791 15 16 16.791 16 19V27C16 27.552 16.448 28 17 28H23C23.552 28 24 27.552 24 27V19C24 16.791 22.209 15 20 15Z" fill="white"/>
+                    <path d="M18 13C18 12.448 18.448 12 19 12H21C21.552 12 22 12.448 22 13V15H18V13Z" fill="white"/>
+                </svg>
+                <h1>ArbOne</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">How It Works</a></li>
+                    <li><a href="#homeowners">Homeowners</a></li>
+                    <li><a href="#companies">Tree Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Tree Removal Made Simple</h2>
+            <p>Connect with qualified tree removal professionals in your area. Submit your project details and receive competitive bids within 24 hours.</p>
+            <div class="cta-buttons">
+                <a href="#homeowners" class="btn btn-primary">Request a Bid</a>
+                <a href="#companies" class="btn btn-secondary">Join as a Provider</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h3>How ArbOne Works</h3>
+                <p>We simplify the process of finding reliable tree removal services at competitive prices.</p>
+            </div>
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <h4>Submit Your Project</h4>
+                    <p>Provide your email and basic details about your tree removal needs. Add photos to help contractors understand the scope.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h4>Receive Bids</h4>
+                    <p>Qualified local tree removal companies will review your project and send competitive bids directly to your inbox.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✅</div>
+                    <h4>Choose Your Provider</h4>
+                    <p>Compare prices, reviews, and credentials. Select the best provider for your needs and budget.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Types Section -->
+    <section class="user-types">
+        <div class="container">
+            <div class="user-container">
+                <!-- Homeowners -->
+                <div class="user-box" id="homeowners">
+                    <h4>Homeowners</h4>
+                    <p>Submit your tree removal project and get competitive bids from qualified professionals.</p>
+                    <form id="homeowner-form">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required placeholder="youremail@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="zip">Zip Code</label>
+                            <input type="text" id="zip" name="zip" required placeholder="Enter your zip code">
+                        </div>
+                        <button type="submit" class="form-submit">Submit Project Request</button>
+                    </form>
+                </div>
+                
+                <!-- Companies -->
+                <div class="user-box" id="companies">
+                    <h4>Tree Service Providers</h4>
+                    <p>Join our network of qualified tree removal professionals and connect with customers in your area.</p>
+                    <form id="company-form">
+                        <div class="form-group">
+                            <label for="company-email">Business Email</label>
+                            <input type="email" id="company-email" name="company-email" required placeholder="company@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="company-name">Company Name</label>
+                            <input type="text" id="company-name" name="company-name" required placeholder="Your company name">
+                        </div>
+                        <button type="submit" class="form-submit">Create Provider Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h3>What Our Customers Say</h3>
+                <p>Hear from homeowners and service providers who have used ArbOne.</p>
+            </div>
+            <div class="testimonial-container">
+                <div class="testimonial">
+                    <p>"I received three competitive bids within 24 hours of submitting my request. The process was seamless, and I saved over $400 compared to my initial quote."</p>
+                    <div class="testimonial-author">- Michael R., Homeowner</div>
+                </div>
+                <div class="testimonial">
+                    <p>"As a certified arborist, ArbOne has become an essential part of my business. The platform connects me with serious clients and has increased my monthly jobs by 30%."</p>
+                    <div class="testimonial-author">- Green Leaf Tree Services</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h5>ArbOne</h5>
+                    <p>Connecting homeowners with qualified tree removal professionals since 2024.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="#features">How It Works</a></li>
+                        <li><a href="#homeowners">Homeowners</a></li>
+                        <li><a href="#companies">Tree Services</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contact Us</h5>
+                    <ul>
+                        <li>Email: info@arbone.com</li>
+                        <li>Phone: (555) 123-4567</li>
+                        <li>Address: 123 Main St, Anytown, USA</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 ArbOne. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission for homeowners
+        document.getElementById('homeowner-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const zip = document.getElementById('zip').value;
+            
+            // You would normally send this data to your Django backend
+            console.log('Homeowner submission:', { email, zip });
+            
+            // Redirect to the full project submission page (you would use your Django URL here)
+            alert('Thank you! You will be redirected to complete your project details.');
+            // window.location.href = '/submit-project/?email=' + encodeURIComponent(email) + '&zip=' + encodeURIComponent(zip);
+        });
+        
+        // Form submission for companies
+        document.getElementById('company-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('company-email').value;
+            const company = document.getElementById('company-name').value;
+            
+            // You would normally send this data to your Django backend
+            console.log('Company submission:', { email, company });
+            
+            // Redirect to the company registration page (you would use your Django URL here)
+            alert('Thank you! You will be redirected to complete your company profile.');
+            // window.location.href = '/register-company/?email=' + encodeURIComponent(email) + '&company=' + encodeURIComponent(company);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href').substring(1);
+                if (!targetId) return;
+                
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
