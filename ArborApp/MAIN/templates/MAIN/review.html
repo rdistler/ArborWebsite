@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArbOne - Review Local Tree Services</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #4caf50;
+            --accent: #f57c00;
+            --light: #f5f5f5;
+            --dark: #333;
+            --danger: #e53935;
+            --success: #43a047;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            top: 0;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px 0 80px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-title h2 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .page-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #ddd;
+            z-index: 1;
+        }
+        
+        .step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 33%;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .step.active .step-number {
+            background-color: var(--primary);
+        }
+        
+        .step.completed .step-number {
+            background-color: var(--success);
+        }
+        
+        .step-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Content Layout */
+        .content-layout {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .main-column {
+            flex: 2;
+        }
+        
+        .side-column {
+            flex: 1;
+        }
+        
+        /* Panel Styles */
+        .panel {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        /* Companies List */
+        .companies-list {
+            margin-bottom: 30px;
+        }
+        
+        .company-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .company-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            transition: background-color 0.2s;
+            position: relative;
+        }
+        
+        .company-header:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .select-company {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .company-info {
+            flex: 1;
+        }
+        
+        .company-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .company-meta {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+        }
+        
+        .stars {
+            color: #ffc107;
+            margin-right: 5px;
+        }
+        
+        .review-count {
+            color: #666;
+        }
+        
+        .expand-icon {
+            margin-left: 15px;
+            font-size: 22px;
+            color: #888;
+            transform-origin: center;
+            transition: transform 0.3s;
+        }
+        
+        .expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .company-details {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+            background-color: white;
+        }
+        
+        .expanded .company-details {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #e0f2f1;
+            color: var(--primary);
+        }
+        
+        .company-description {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .company-details-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .detail-icon {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+        
+        /* Request Summary */
+        .request-summary h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .summary-item {
+            display: flex;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .summary-label {
+            width: 120px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .summary-value {
+            flex: 1;
+        }
+        
+        .trees-count {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .tree-thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .tree-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 20px;
+            position: relative;
+        }
+        
+        .tree-number {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+        
+        .btn-secondary {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+        }
+        
+        .btn-accent:hover {
+            background-color: #e65100;
+        }
+        
+        .btn-send {
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .copyright {
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .info-box p {
+            margin: 0;
+            color: #2e7d32;
+        }
+        
+        /* Select All Companies */
+        .select-all-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .select-all-checkbox {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .select-all-label {
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-layout {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .step-label {
+                font-size: 12px;
+            }
+            
+            .company-header {
+                flex-wrap: wrap;
+            }
+            
+            .company-meta {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#2e7d32"/>
+                    <path d="M20 8C13.373 8 8 13.373 8 20C8 26.627 13.373 32 20 32C26.627 32 32 26.627 32 20C32 13.373 26.627 8 20 8ZM20 30C14.477 30 10 25.523 10 20C10 14.477 14.477 10 20 10C25.523 10 30 14.477 30 20C30 25.523 25.523 30 20 30Z" fill="white"/>
+                    <path d="M20 15C17.791 15 16 16.791 16 19V27C16 27.552 16.448 28 17 28H23C23.552 28 24 27.552 24 27V19C24 16.791 22.209 15 20 15Z" fill="white"/>
+                    <path d="M18 13C18 12.448 18.448 12 19 12H21C21.552 12 22 12.448 22 13V15H18V13Z" fill="white"/>
+                </svg>
+                <h1>ArbOne</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-title">
+                <h2>Select Tree Service Providers</h2>
+                <p>Choose which local companies you'd like to review your tree removal request. We recommend selecting at least 3 companies to get competitive bids.</p>
+            </div>
+            
+            <div class="progress-steps">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Basic Info</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Tree Details</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Review</div>
+                </div>
+            </div>
+            
+            <button id="send-request-top" class="btn btn-accent btn-send">
+                <span>📨</span> Send Tree For Review (5 companies selected)
+            </button>
+            
+            <div class="info-box">
+                <p>These providers meet your project requirements and are available in your area. You'll receive bids from all selected companies within 24-48 hours.</p>
+            </div>
+            
+            <div class="content-layout">
+                <div class="main-column">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">Tree Service Providers Near You</h3>
+                        </div>
+                        
+                        <div class="select-all-container">
+                            <input type="checkbox" id="select-all" class="select-all-checkbox" checked>
+                            <label for="select-all" class="select-all-label">Select All Companies</label>
+                        </div>
+                        
+                        <div class="companies-list">
+                            <!-- Company 1 -->
+                            <div class="company-item">
+                                <div class="company-header" data-toggle="company-1">
+                                    <input type="checkbox" class="select-company" checked>
+                                    <div class="company-logo">TS</div>
+                                    <div class="company-info">
+                                        <div class="company-name">TreeSafe Professionals</div>
+                                        <div class="company-meta">
+                                            <div class="rating">
+                                                <span class="stars">★★★★★</span>
+                                                <span class="review-count">(48 reviews)</span>
+                                            </div>
+                                            <div class="distance">2.3 miles away</div>
+                                        </div>
+                                    </div>
+                                    <div class="expand-icon">▼</div>
+                                </div>
+                                <div class="company-details">
+                                    <div class="badges">
+                                        <span class="badge">Licensed</span>
+                                        <span class="badge">Insured</span>
+                                        <span class="badge">5+ Years</span>
+                                        <span class="badge">Emergency Service</span>
+                                    </div>
+                                    <p class="company-description">TreeSafe Professionals specializes in safe and efficient tree removal services with minimal impact to your property. Our certified arborists have over 15 years of experience handling complex tree removals.</p>
+                                    <div class="company-details-meta">
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💼</span>
+                                            <span>Licensed & Bonded</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">🕒</span>
+                                            <span>Same-day estimates</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💰</span>
+                                            <span>Free quotes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Company 2 -->
+                            <div class="company-item">
+                                <div class="company-header" data-toggle="company-2">
+                                    <input type="checkbox" class="select-company" checked>
+                                    <div class="company-logo">GT</div>
+                                    <div class="company-info">
+                                        <div class="company-name">Green Thumb Tree Service</div>
+                                        <div class="company-meta">
+                                            <div class="rating">
+                                                <span class="stars">★★★★☆</span>
+                                                <span class="review-count">(32 reviews)</span>
+                                            </div>
+                                            <div class="distance">3.5 miles away</div>
+                                        </div>
+                                    </div>
+                                    <div class="expand-icon">▼</div>
+                                </div>
+                                <div class="company-details">
+                                    <div class="badges">
+                                        <span class="badge">Licensed</span>
+                                        <span class="badge">Insured</span>
+                                        <span class="badge">Family Owned</span>
+                                    </div>
+                                    <p class="company-description">Family-owned tree service with 20+ years in the industry. We offer competitive pricing and environmentally friendly disposal methods. Our team specializes in difficult-to-access trees and emergency removals.</p>
+                                    <div class="company-details-meta">
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💼</span>
+                                            <span>Licensed & Insured</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">🕒</span>
+                                            <span>Within 48 hours</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💰</span>
+                                            <span>Senior discounts</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Company 3 -->
+                            <div class="company-item">
+                                <div class="company-header" data-toggle="company-3">
+                                    <input type="checkbox" class="select-company" checked>
+                                    <div class="company-logo">AT</div>
+                                    <div class="company-info">
+                                        <div class="company-name">Arbor Tech Tree Removal</div>
+                                        <div class="company-meta">
+                                            <div class="rating">
+                                                <span class="stars">★★★★★</span>
+                                                <span class="review-count">(67 reviews)</span>
+                                            </div>
+                                            <div class="distance">5.1 miles away</div>
+                                        </div>
+                                    </div>
+                                    <div class="expand-icon">▼</div>
+                                </div>
+                                <div class="company-details">
+                                    <div class="badges">
+                                        <span class="badge">Licensed</span>
+                                        <span class="badge">Insured</span>
+                                        <span class="badge">10+ Years</span>
+                                        <span class="badge">Eco-Friendly</span>
+                                    </div>
+                                    <p class="company-description">Arbor Tech combines traditional arborist expertise with modern equipment for safe, efficient tree removal. We recycle 100% of wood waste into mulch and firewood. Our team includes ISA-certified arborists.</p>
+                                    <div class="company-details-meta">
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💼</span>
+                                            <span>Certified Arborists</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">🕒</span>
+                                            <span>Same-day response</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💰</span>
+                                            <span>Price match guarantee</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Company 4 -->
+                            <div class="company-item">
+                                <div class="company-header" data-toggle="company-4">
+                                    <input type="checkbox" class="select-company" checked>
+                                    <div class="company-logo">PT</div>
+                                    <div class="company-info">
+                                        <div class="company-name">Precision Tree Care</div>
+                                        <div class="company-meta">
+                                            <div class="rating">
+                                                <span class="stars">★★★★☆</span>
+                                                <span class="review-count">(29 reviews)</span>
+                                            </div>
+                                            <div class="distance">4.7 miles away</div>
+                                        </div>
+                                    </div>
+                                    <div class="expand-icon">▼</div>
+                                </div>
+                                <div class="company-details">
+                                    <div class="badges">
+                                        <span class="badge">Licensed</span>
+                                        <span class="badge">Insured</span>
+                                        <span class="badge">Veteran Owned</span>
+                                    </div>
+                                    <p class="company-description">Veteran-owned business specializing in precise, damage-free tree removal. Our team uses state-of-the-art equipment and techniques to ensure safety and property protection. We offer competitive rates and military discounts.</p>
+                                    <div class="company-details-meta">
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💼</span>
+                                            <span>$2M Liability Insurance</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">🕒</span>
+                                            <span>48-hour response</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💰</span>
+                                            <span>Military & senior discounts</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Company 5 -->
+                            <div class="company-item">
+                                <div class="company-header" data-toggle="company-5">
+                                    <input type="checkbox" class="select-company" checked>
+                                    <div class="company-logo">ET</div>
+                                    <div class="company-info">
+                                        <div class="company-name">Elite Tree Solutions</div>
+                                        <div class="company-meta">
+                                            <div class="rating">
+                                                <span class="stars">★★★★★</span>
+                                                <span class="review-count">(53 reviews)</span>
+                                            </div>
+                                            <div class="distance">6.2 miles away</div>
+                                        </div>
+                                    </div>
+                                    <div class="expand-icon">▼</div>
+                                </div>
+                                <div class="company-details">
+                                    <div class="badges">
+                                        <span class="badge">Licensed</span>
+                                        <span class="badge">Insured</span>
+                                        <span class="badge">15+ Years</span>
+                                        <span class="badge">Emergency Service</span>
+                                    </div>
+                                    <p class="company-description">Premium tree removal service with a focus on difficult and hazardous trees. Our team includes master arborists with specialized equipment for complex removals. We offer comprehensive cleanup and stump grinding services.</p>
+                                    <div class="company-details-meta">
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💼</span>
+                                            <span>Master Arborists</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">🕒</span>
+                                            <span>24/7 emergency service</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💰</span>
+                                            <span>Satisfaction guarantee</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Company 6 -->
+                            <div class="company-item">
+                                <div class="company-header" data-toggle="company-6">
+                                    <input type="checkbox" class="select-company">
+                                    <div class="company-logo">TT</div>
+                                    <div class="company-info">
+                                        <div class="company-name">TreeTech Removal Services</div>
+                                        <div class="company-meta">
+                                            <div class="rating">
+                                                <span class="stars">★★★☆☆</span>
+                                                <span class="review-count">(17 reviews)</span>
+                                            </div>
+                                            <div class="distance">7.8 miles away</div>
+                                        </div>
+                                    </div>
+                                    <div class="expand-icon">▼</div>
+                                </div>
+                                <div class="company-details">
+                                    <div class="badges">
+                                        <span class="badge">Licensed</span>
+                                        <span class="badge">Insured</span>
+                                        <span class="badge">New Business</span>
+                                    </div>
+                                    <p class="company-description">Newer company offering competitive rates for all tree removal services. Our team focuses on customer satisfaction and thorough property cleanup. We use modern equipment and environmentally friendly practices.</p>
+                                    <div class="company-details-meta">
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💼</span>
+                                            <span>Licensed & Insured</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">🕒</span>
+                                            <span>72-hour response</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">💰</span>
+                                            <span>New customer discount</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <a href="request.html" class="btn btn-secondary">Back</a>
+                        <button id="send-request-bottom" class="btn btn-accent">Send Request</button>
+                    </div>
+                </div>
+                
+                <div class="side-column">
+                    <div class="panel request-summary">
+                        <h3>Your Request Summary</h3>
+                        <div class="summary-item">
+                            <div class="summary-label">Address:</div>
+                            <div class="summary-value">123 Oak Avenue, Springfield, IL 62701</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Contact:</div>
+                            <div class="summary-value">johndoe@example.com<br>(555) 123-4567</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Trees:</div>
+                            <div class="summary-value">
+                                <span class="trees-count">2 Trees for Removal</span>
+                                <small>• Large oak tree (front yard)<br>• Medium maple tree (backyard)</small>
+                                <div class="tree-thumbnails">
+                                    <div class="tree-thumbnail">
+                                        🌳
+                                        <span class="tree-number">1</span>
+                                    </div>
+                                    <div class="tree-thumbnail">
+                                        🌳
+                                        <span class="tree-number">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Notes:</div>
+                            <div class="summary-value">Fence around backyard; gate access on east side. Prefer weekend service if possible.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2025 ArbOne. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle company details
+        document.querySelectorAll('.company-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                // Don't toggle if clicking on checkbox
+                if (e.target.classList.contains('select-company')) {
+                    return;
+                }
+                
+                const companyItem = this.closest('.company-item');
+                companyItem.classList.toggle('expanded');
+                
+                // Update selected count
+                updateSelectedCount();
+            });
+        });
+        
+        // Handle company selection
+        document.querySelectorAll('.select-company').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateSelectedCount();
+                updateSelectAllCheckbox();
+            });
+        });
+        
+        // Handle "Select All" checkbox
+        document.getElementById('select-all').addEventListener('change', function() {
+            const isChecked = this.checked;
+            document.querySelectorAll('.select-company').forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+            updateSelectedCount();
+        });
+        
+        // Update "Select All" checkbox based on individual selections
+        function updateSelectAllCheckbox() {
+            const checkboxes = document.querySelectorAll('.select-company');
+            const selectAllCheckbox = document.getElementById('select-all');
+            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            const noneChecked = Array.from(checkboxes).every(checkbox => !checkbox.checked);
+            
+            selectAllCheckbox.checked = allChecked;
+            selectAllCheckbox.indeterminate = !allChecked && !noneChecked;
+        }
+        
+        // Update the count of selected companies
+        function updateSelectedCount() {
+            const checkedCount = document.querySelectorAll('.select-company:checked').length;
+            const sendButtonTop = document.getElementById('send-request-top');
+            
+            // Update the button text
+            sendButtonTop.innerHTML = `<span>📨</span> Send Tree For Review (${checkedCount} ${checkedCount === 1 ? 'company' : 'companies'} selected)`;
+            
+            // Disable the button if no companies are selected
+            const sendButtons = [sendButtonTop, document.getElementById('send-request-bottom')];
+            sendButtons.forEach(button => {
+                button.disabled = checkedCount === 0;
+                if (checkedCount === 0) {
+                    button.classList.add('btn-secondary');
+                    button.classList.remove('btn-accent');
+                } else {
+                    button.classList.add('btn-accent');
+                    button.classList.remove('btn-secondary');
+                }
+            });
+        }
+        
+        // Handle form submission
+        document.getElementById('send-request-bottom').addEventListener('click', submitRequest);
+        document.getElementById('send-request-top').addEventListener('click', submitRequest);
+        
+        function submitRequest() {
+            const selectedCompanies = [];
+            document.querySelectorAll('.select-company:checked').forEach(checkbox => {
+                const companyName = checkbox.closest('.company-item').querySelector('.company-name').textContent;
+                selectedCompanies.push(companyName);
+            });
+            
+            if (selectedCompanies.length === 0) {
+                alert('Please select at least one company to send your request to.');
+                return;
+            }
+            
+            // In a real implementation, you would send this data to your Django backend
+            console.log('Selected companies:', selectedCompanies);
+            
+            // Show confirmation
+            alert(`Your tree removal request has been sent to ${selectedCompanies.length} companies. You will receive bids within 24-48 hours.`);
+            
+            // Redirect to a confirmation page (in a real implementation)
+            // window.location.href = '/confirmation/';
+        }
+        
+        // Initialize
+        updateSelectedCount();
+    </script>
+</body>
+</html>

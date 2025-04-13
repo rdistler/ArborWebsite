@@ -1,0 +1,1379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArbOne Business - Tree Service Dashboard</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #4caf50;
+            --accent: #f57c00;
+            --light: #f5f5f5;
+            --dark: #333;
+            --danger: #e53935;
+            --success: #43a047;
+            --warning: #ffa000;
+            --info: #1976d2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            background-color: var(--accent);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-bell {
+            margin-right: 20px;
+            font-size: 20px;
+            color: #666;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px 0 80px;
+        }
+        
+        .page-title {
+            margin-bottom: 30px;
+        }
+        
+        .page-title h2 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .page-title p {
+            color: #666;
+        }
+        
+        /* Control Bar */
+        .control-bar {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+        
+        .search-box button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        
+        /* Submissions List */
+        .submissions-list {
+            margin-bottom: 40px;
+        }
+        
+        .submission-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .submission-header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s;
+        }
+        
+        .submission-header:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .submission-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: var(--primary);
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .submission-info {
+            flex: 1;
+        }
+        
+        .submission-info-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+        
+        .customer-email {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark);
+        }
+        
+        .submission-date {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+        
+        .submission-info-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .info-chip {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .info-chip i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+        
+        .submission-status {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-left: 20px;
+        }
+        
+        .status-new {
+            color: var(--info);
+        }
+        
+        .status-viewed {
+            color: var(--warning);
+        }
+        
+        .status-bid-sent {
+            color: var(--success);
+        }
+        
+        .expand-icon {
+            margin-left: 15px;
+            font-size: 22px;
+            color: #888;
+            transform-origin: center;
+            transition: transform 0.3s;
+        }
+        
+        .expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .submission-details {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+        
+        .expanded .submission-details {
+            padding: 20px;
+            max-height: 1000px;
+        }
+        
+        .details-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .details-left {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .details-right {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .detail-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-section h4 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tree-item {
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .tree-item h5 {
+            font-size: 15px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .tree-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .photo-thumbnail {
+            width: 100%;
+            height: 70px;
+            border-radius: 4px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .photo-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .address-info, .contact-info {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .info-label {
+            width: 80px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        .info-value {
+            flex: 1;
+        }
+        
+        .notes-section {
+            margin-top: 10px;
+            font-size: 14px;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .btn-ai {
+            background-color: var(--info);
+            color: white;
+            border: none;
+        }
+        
+        .btn-ai:hover {
+            background-color: #0d47a1;
+        }
+        
+        .bid-form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .bid-form.active {
+            display: block;
+        }
+        
+        .ai-estimate {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .ai-estimate.active {
+            display: block;
+        }
+        
+        .ai-estimate h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .ai-estimate-content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .ai-estimate-content h5 {
+            font-size: 16px;
+            margin: 15px 0 10px;
+            color: var(--primary);
+        }
+        
+        .ai-estimate-content ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .page-item {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background-color: white;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .page-item:hover {
+            border-color: var(--primary);
+        }
+        
+        .page-item.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .modal-close {
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-new {
+            background-color: #e3f2fd;
+            color: var(--info);
+        }
+        
+        .badge-viewed {
+            background-color: #fff8e1;
+            color: var(--warning);
+        }
+        
+        .badge-bid {
+            background-color: #e8f5e9;
+            color: var(--success);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-col h4 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .user-menu {
+                margin-top: 15px;
+            }
+            
+            .control-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .submission-header {
+                flex-wrap: wrap;
+            }
+            
+            .submission-icon {
+                margin-bottom: 10px;
+            }
+            
+            .submission-info-top {
+                flex-direction: column;
+            }
+            
+            .submission-date {
+                margin-top: 5px;
+            }
+            
+            .details-content {
+                flex-direction: column;
+            }
+            
+            .photo-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#2e7d32"/>
+                    <path d="M20 8C13.373 8 8 13.373 8 20C8 26.627 13.373 32 20 32C26.627 32 32 26.627 32 20C32 13.373 26.627 8 20 8ZM20 30C14.477 30 10 25.523 10 20C10 14.477 14.477 10 20 10C25.523 10 30 14.477 30 20C30 25.523 25.523 30 20 30Z" fill="white"/>
+                    </svg>
+                    <h1>ArbOne <span>Business</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active"><span>📋</span> Tree Submissions</a></li>
+                        <li><a href="#"><span>💰</span> My Bids</a></li>
+                        <li><a href="#"><span>🏆</span> Awarded Jobs</a></li>
+                        <li><a href="#"><span>⚙️</span> Settings</a></li>
+                    </ul>
+                </nav>
+                <div class="user-menu">
+                    <div class="notification-bell">
+                        🔔
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="user-avatar">GT</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-title">
+                <h2>Recent Tree Submissions</h2>
+                <p>Review and bid on recent tree removal requests in your service area.</p>
+            </div>
+
+            <div class="control-bar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search by location, customer, or tree type...">
+                    <button>🔍</button>
+                </div>
+                <div class="filters">
+                    <select class="filter-select">
+                        <option value="all">All Distances</option>
+                        <option value="5">Within 5 miles</option>
+                        <option value="10">Within 10 miles</option>
+                        <option value="25">Within 25 miles</option>
+                        <option value="50">Within 50 miles</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="all">All Statuses</option>
+                        <option value="new">New</option>
+                        <option value="viewed">Viewed</option>
+                        <option value="bid">Bid Sent</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="recent">Most Recent</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="distance">Nearest First</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="submissions-list">
+                <!-- Submission 1 -->
+                <div class="submission-item">
+                    <div class="submission-header" data-toggle="submission-1">
+                        <div class="submission-icon">🌳</div>
+                        <div class="submission-info">
+                            <div class="submission-info-top">
+                                <div class="customer-email">johndoe@example.com</div>
+                                <div class="submission-date">📅 Submitted 2 hours ago</div>
+                            </div>
+                            <div class="submission-info-bottom">
+                                <div class="info-chip"><i>🌲</i> 2 Trees</div>
+                                <div class="info-chip"><i>📍</i> 2.3 miles away</div>
+                                <div class="info-chip"><i>📱</i> Phone verified</div>
+                            </div>
+                        </div>
+                        <div class="submission-status status-new">
+                            <span class="badge badge-new">NEW</span>
+                        </div>
+                        <div class="expand-icon">▼</div>
+                    </div>
+                    <div class="submission-details">
+                        <div class="details-content">
+                            <div class="details-left">
+                                <div class="detail-section">
+                                    <h4>Tree Details</h4>
+                                    <div class="tree-item">
+                                        <h5>Tree #1</h5>
+                                        <p class="tree-description">Large oak tree, approximately 60 feet tall. Located in front yard near driveway. Some dead branches in upper canopy. Tree is healthy otherwise but needs to be removed for driveway expansion.</p>
+                                        <div class="photo-gallery">
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/1.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/2.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/3.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/4.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tree-item">
+                                        <h5>Tree #2</h5>
+                                        <p class="tree-description">Medium-sized maple tree, approximately 35 feet tall. Located in backyard near fence. Tree appears to be diseased with some fungal growth at the base. Customer wants it removed before it falls on fence.</p>
+                                        <div class="photo-gallery">
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/5.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/6.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/7.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/8.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary" onclick="toggleBidForm('bid-form-1')"><span>💰</span> Submit a Bid</button>
+                                    <button class="btn btn-secondary"><span>❌</span> Not Interested</button>
+                                    <button class="btn btn-ai" onclick="toggleAIEstimate('ai-estimate-1')"><span>🤖</span> AI Estimate</button>
+                                </div>
+                                <div id="bid-form-1" class="bid-form">
+                                    <h4>Submit Your Bid</h4>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="bid-amount-1">Bid Amount ($)*</label>
+                                            <input type="number" id="bid-amount-1" required placeholder="Enter your total bid amount">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bid-details-1">Bid Details*</label>
+                                            <textarea id="bid-details-1" required placeholder="Describe what's included in your bid (e.g., stump grinding, debris removal, timeline, etc.)"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="availability-1">Availability*</label>
+                                            <select id="availability-1" required>
+                                                <option value="">Select availability</option>
+                                                <option value="immediate">Immediate (within 48 hours)</option>
+                                                <option value="week">Within a week</option>
+                                                <option value="twoweeks">Within two weeks</option>
+                                                <option value="month">Within a month</option>
+                                            </select>
+                                        </div>
+                                        <div class="action-buttons">
+                                            <button type="submit" class="btn btn-primary">Submit Bid</button>
+                                            <button type="button" class="btn btn-secondary" onclick="toggleBidForm('bid-form-1')">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div id="ai-estimate-1" class="ai-estimate">
+                                    <h4>AI-Generated Bid Proposal</h4>
+                                    <div class="ai-estimate-content">
+                                        <h5>Tree Removal Bid Proposal</h5>
+                                        <p>Client: Property Owner/Manager<br>
+                                        Location: Tree located in landscape bed adjacent to parking lot<br>
+                                        Date: October 26, 2023<br>
+                                        Prepared By: Professional Arborist & Tree Removal Expert</p>
+                                        
+                                        <h5>1. Tree Analysis:</h5>
+                                        <p>Tree Identification: The image shows a single, deciduous tree, possibly a multi-stemmed variety like a River Birch (Betula nigra) or similar ornamental species.</p>
+                                        <p>Size:</p>
+                                        <ul>
+                                            <li>Height: Estimated at approximately 25 feet.</li>
+                                            <li>DBH (Diameter at Breast Height): Estimated combined effective DBH for the multiple stems is approximately 12 inches.</li>
+                                        </ul>
+                                        <p>Health: The tree appears to be in fair to good health, showing signs of spring budding. No major structural defects, significant deadwood, or obvious disease indicators are visible from the provided image angle. Classified as Healthy (Factor: 1.0).</p>
+                                        <p>Complexity: Moderate complexity due to the multi-stem structure and proximity to hardscaping. Requires careful felling and sectioning to avoid damage.</p>
+                                        
+                                        <h5>2. Estimated Removal Difficulty:</h5>
+                                        <p>Overall Difficulty: Low to Moderate. The tree's size is manageable, and access is excellent. The primary challenge is managing the removal process safely next to the parking lot.</p>
+                                        
+                                        <h5>3. Detailed Removal Quote:</h5>
+                                        <p>Based on the analysis, the estimated cost is calculated as follows:</p>
+                                        <p>Total Estimated Cost Range:</p>
+                                        <ul>
+                                            <li>Tree Removal & Debris Hauling (Stump left near ground level): $1,110.00</li>
+                                            <li>Tree Removal, Debris Hauling & Stump Grinding: $1,158.00</li>
+                                        </ul>
+                                        
+                                        <h5>4. Recommendations:</h5>
+                                        <ul>
+                                            <li>Safety Coordination: Due to the proximity to the parking lot, it is crucial to coordinate the removal time to ensure adjacent parking spaces can be temporarily blocked off for safety and operational efficiency.</li>
+                                            <li>Stump Grinding: We recommend opting for stump grinding. This provides a cleaner look, eliminates potential tripping hazards, prevents possible regrowth from the stump, and allows for easier replanting or landscaping in the area.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="details-right">
+                                <div class="detail-section">
+                                    <h4>Property Information</h4>
+                                    <div class="address-info">
+                                        <div class="info-row">
+                                            <div class="info-label">Address:</div>
+                                            <div class="info-value">123 Oak Avenue</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">City:</div>
+                                            <div class="info-value">Springfield</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">State:</div>
+                                            <div class="info-value">IL</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">Zip Code:</div>
+                                            <div class="info-value">62701</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>Contact Information</h4>
+                                    <div class="contact-info">
+                                        <div class="info-row">
+                                            <div class="info-label">Email:</div>
+                                            <div class="info-value">johndoe@example.com</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">Phone:</div>
+                                            <div class="info-value">(555) 123-4567</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>Additional Notes</h4>
+                                    <div class="notes-section">
+                                        Fence around backyard; gate access on east side. Prefer weekend service if possible. Looking to have this done within the next month.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submission 2 -->
+                <div class="submission-item">
+                    <div class="submission-header" data-toggle="submission-2">
+                        <div class="submission-icon">🌳</div>
+                        <div class="submission-info">
+                            <div class="submission-info-top">
+                                <div class="customer-email">sarahsmith@example.com</div>
+                                <div class="submission-date">📅 Submitted 6 hours ago</div>
+                            </div>
+                            <div class="submission-info-bottom">
+                                <div class="info-chip"><i>🌲</i> 1 Tree</div>
+                                <div class="info-chip"><i>📍</i> 4.7 miles away</div>
+                                <div class="info-chip"><i>⚡</i> Urgent request</div>
+                            </div>
+                        </div>
+                        <div class="submission-status status-viewed">
+                            <span class="badge badge-viewed">VIEWED</span>
+                        </div>
+                        <div class="expand-icon">▼</div>
+                    </div>
+                    <div class="submission-details">
+                        <div class="details-content">
+                            <div class="details-left">
+                                <div class="detail-section">
+                                    <h4>Tree Details</h4>
+                                    <div class="tree-item">
+                                        <h5>Tree #1</h5>
+                                        <p class="tree-description">Large pine tree, approximately 75 feet tall. Located in backyard. Tree was damaged in recent storm and is leaning toward house. Several large branches have already fallen. Customer notes this is an urgent situation.</p>
+                                        <div class="photo-gallery">
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/9.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/10.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/11.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                            <div class="photo-thumbnail">
+                                                <img src="{% static 'BUSINESS/image/12.jpeg' %}" alt="Tree photo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary" onclick="toggleBidForm('bid-form-2')"><span>💰</span> Submit a Bid</button>
+                                    <button class="btn btn-secondary"><span>❌</span> Not Interested</button>
+                                    <button class="btn btn-ai" onclick="toggleAIEstimate('ai-estimate-2')"><span>🤖</span> AI Estimate</button>
+                                </div>
+                                <div id="bid-form-2" class="bid-form">
+                                    <h4>Submit Your Bid</h4>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="bid-amount-2">Bid Amount ($)*</label>
+                                            <input type="number" id="bid-amount-2" required placeholder="Enter your total bid amount">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bid-details-2">Bid Details*</label>
+                                            <textarea id="bid-details-2" required placeholder="Describe what's included in your bid (e.g., stump grinding, debris removal, timeline, etc.)"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="availability-2">Availability*</label>
+                                            <select id="availability-2" required>
+                                                <option value="">Select availability</option>
+                                                <option value="immediate">Immediate (within 48 hours)</option>
+                                                <option value="week">Within a week</option>
+                                                <option value="twoweeks">Within two weeks</option>
+                                                <option value="month">Within a month</option>
+                                            </select>
+                                        </div>
+                                        <div class="action-buttons">
+                                            <button type="submit" class="btn btn-primary">Submit Bid</button>
+                                            <button type="button" class="btn btn-secondary" onclick="toggleBidForm('bid-form-2')">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div id="ai-estimate-2" class="ai-estimate">
+                                    <h4>AI-Generated Bid Proposal</h4>
+                                    <div class="ai-estimate-content">
+                                        <h5>Tree Removal Bid Proposal</h5>
+                                        <p>Client: Property Owner/Manager<br>
+                                        Location: Tree located in backyard<br>
+                                        Date: October 26, 2023<br>
+                                        Prepared By: Professional Arborist & Tree Removal Expert</p>
+                                        
+                                        <h5>1. Tree Analysis:</h5>
+                                        <p>Tree Identification: Large pine tree with storm damage, leaning toward house.</p>
+                                        <p>Size:</p>
+                                        <ul>
+                                            <li>Height: Estimated at approximately 75 feet.</li>
+                                            <li>DBH (Diameter at Breast Height): Estimated at approximately 20 inches.</li>
+                                        </ul>
+                                        <p>Health: The tree is damaged from a recent storm with several large fallen branches. The leaning posture indicates potential root plate damage. Classified as Hazardous (Factor: 1.4).</p>
+                                        <p>Complexity: High complexity due to the size, lean angle, and proximity to the house. Requires technical rigging and possibly crane assistance.</p>
+                                        
+                                        <h5>2. Estimated Removal Difficulty:</h5>
+                                        <p>Overall Difficulty: High. This is an emergency removal with significant risk factors. The tree's size and lean toward the house require specialized equipment and technical expertise.</p>
+                                        
+                                        <h5>3. Detailed Removal Quote:</h5>
+                                        <p>Based on the analysis, the estimated cost is calculated as follows:</p>
+                                        <p>Total Estimated Cost Range:</p>
+                                        <ul>
+                                            <li>Emergency Tree Removal & Debris Hauling: $2,850.00</li>
+                                            <li>With Stump Grinding: $2,950.00</li>
+                                        </ul>
+                                        
+                                        <h5>4. Recommendations:</h5>
+                                        <ul>
+                                            <li>Immediate Action: This tree poses an immediate risk to the property and should be removed as soon as possible.</li>
+                                            <li>Crane Assistance: Due to the size and lean angle, crane assistance is recommended for safe removal.</li>
+                                            <li>Home Protection: We will use specialized rigging techniques to protect the home during removal.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="details-right">
+                                <div class="detail-section">
+                                    <h4>Property Information</h4>
+                                    <div class="address-info">
+                                        <div class="info-row">
+                                            <div class="info-label">Address:</div>
+                                            <div class="info-value">456 Pine Street</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">City:</div>
+                                            <div class="info-value">Springfield</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">State:</div>
+                                            <div class="info-value">IL</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">Zip Code:</div>
+                                            <div class="info-value">62702</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>Contact Information</h4>
+                                    <div class="contact-info">
+                                        <div class="info-row">
+                                            <div class="info-label">Email:</div>
+                                            <div class="info-value">sarahsmith@example.com</div>
+                                        </div>
+                                        <div class="info-row">
+                                            <div class="info-label">Phone:</div>
+                                            <div class="info-value">(555) 987-6543</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>Additional Notes</h4>
+                                    <div class="notes-section">
+                                        Tree is leaning toward house after last night's storm. Looking for emergency removal as soon as possible. Accessible through side gate on north side of property. Please call before arriving.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="page-item active">1</div>
+                <div class="page-item">2</div>
+                <div class="page-item">3</div>
+                <div class="page-item">4</div>
+                <div class="page-item">5</div>
+                <div class="page-item">→</div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modal for Photo Viewer -->
+    <div id="photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Tree Photo</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <img id="modal-image" src="" alt="Tree photo" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>ArbOne Business</h4>
+                    <ul>
+                        <li><a href="#">Tree Submissions</a></li>
+                        <li><a href="#">My Bids</a></li>
+                        <li><a href="#">Awarded Jobs</a></li>
+                        <li><a href="#">Account Settings</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Insurance Requirements</a></li>
+                        <li><a href="#">Licensing Information</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 ArbOne. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle submission details
+        document.querySelectorAll('.submission-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const submissionItem = this.closest('.submission-item');
+                
+                // Close any currently open items
+                document.querySelectorAll('.submission-item.expanded').forEach(item => {
+                    if (item !== submissionItem) {
+                        item.classList.remove('expanded');
+                        item.querySelector('.submission-details').style.maxHeight = '0';
+                    }
+                });
+                
+                // Toggle the clicked item
+                submissionItem.classList.toggle('expanded');
+                
+                // Update status if it's new
+                const statusBadge = this.querySelector('.submission-status .badge');
+                if (statusBadge && statusBadge.classList.contains('badge-new')) {
+                    statusBadge.classList.remove('badge-new');
+                    statusBadge.classList.add('badge-viewed');
+                    statusBadge.textContent = 'VIEWED';
+                    
+                    this.querySelector('.submission-status').classList.remove('status-new');
+                    this.querySelector('.submission-status').classList.add('status-viewed');
+                }
+                
+                // Close any open bid forms or AI estimates when collapsing
+                if (!submissionItem.classList.contains('expanded')) {
+                    const openForms = submissionItem.querySelectorAll('.bid-form.active, .ai-estimate.active');
+                    openForms.forEach(form => {
+                        form.classList.remove('active');
+                    });
+                }
+            });
+        });
+        
+        // Toggle bid form
+        function toggleBidForm(formId) {
+            const form = document.getElementById(formId);
+            form.classList.toggle('active');
+            
+            // Close AI estimate if it's open
+            const estimateId = formId.replace('bid-form', 'ai-estimate');
+            const aiEstimate = document.getElementById(estimateId);
+            if (aiEstimate && aiEstimate.classList.contains('active')) {
+                aiEstimate.classList.remove('active');
+            }
+            
+            // Scroll to form if opening
+            if (form.classList.contains('active')) {
+                form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        // Toggle AI estimate
+        function toggleAIEstimate(estimateId) {
+            const estimate = document.getElementById(estimateId);
+            estimate.classList.toggle('active');
+            
+            // Close bid form if it's open
+            const formId = estimateId.replace('ai-estimate', 'bid-form');
+            const bidForm = document.getElementById(formId);
+            if (bidForm && bidForm.classList.contains('active')) {
+                bidForm.classList.remove('active');
+            }
+            
+            // Scroll to estimate if opening
+            if (estimate.classList.contains('active')) {
+                estimate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        // Photo thumbnail click - would open modal in a full implementation
+        document.querySelectorAll('.photo-thumbnail').forEach(thumbnail => {
+            thumbnail.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent toggling the submission item
+                const modal = document.getElementById('photo-modal');
+                modal.classList.add('active');
+                
+                // In a real implementation, this would set the image source
+                // document.getElementById('modal-image').src = this.dataset.src;
+            });
+        });
+        
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('photo-modal');
+            modal.classList.remove('active');
+        }
+        
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('photo-modal');
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+        
+        // Filter change event
+        document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', function() {
+                // In a real implementation, this would trigger filtering of the results
+                console.log('Filter changed:', this.value);
+            });
+        });
+        
+        // Pagination click
+        document.querySelectorAll('.page-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.page-item').forEach(page => {
+                    page.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // In a real implementation, this would load the corresponding page
+                console.log('Page changed:', this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>
